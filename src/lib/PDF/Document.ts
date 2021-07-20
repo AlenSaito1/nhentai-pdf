@@ -8,14 +8,14 @@ export class Document {
 
     build = async (): Promise<Buffer> => {
         const document = new PDF({ margin: 0, size: sizes[this.size] })
-        for (const image of this.images) {
+        for (const image of this.pages) {
             const file = existsSync(image) ? image : await download(image)
             document.image(file, 0, 0, {
                 fit: sizes[this.size] as [number, number],
                 align: 'center',
                 valign: 'center'
             })
-            if (this.images.indexOf(image) === this.pages.length - 1) break
+            if (this.pages.indexOf(image) === this.pages.length - 1) break
             else document.addPage()
         }
         document.end()
